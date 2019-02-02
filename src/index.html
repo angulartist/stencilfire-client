@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Chests.io (alpha)</title>
+
+    <meta
+      name="viewport"
+      content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="description" content="Rate anything with emojis!" />
+    <meta name="theme-color" content="#16161d" />
+
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Ionic PWA" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+    <meta http-equiv="x-ua-compatible" content="IE=Edge" />
+
+    <link href="/build/app.css" rel="stylesheet" />
+    <script src="/build/app.js"></script>
+
+    <link rel="apple-touch-icon" href="/assets/icon/icon.png" />
+    <link rel="icon" type="image/x-icon" href="/assets/icon/favicon.ico" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
+    />
+  </head>
+
+  <body>
+    <app-root></app-root>
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-auth.js"></script>
+
+    <script>
+      const config = {
+        apiKey: 'AIzaSyBe9Z8LIpswa21s0_T7SeM4gsPHAKi5C6k',
+        authDomain: 'notbanana-7f869.firebaseapp.com',
+        databaseURL: 'https://notbanana-7f869.firebaseio.com',
+        projectId: 'notbanana-7f869',
+        storageBucket: 'notbanana-7f869.appspot.com',
+        messagingSenderId: '697769708696'
+      }
+
+      const app = firebase.initializeApp(config)
+
+      // Firestore
+      const db = app.firestore()
+
+      db.settings({
+        timestampsInSnapshots: true
+      })
+
+      // Storage
+      const storage = app.storage()
+
+      // Auth
+      const auth = app.auth()
+
+      /**
+       * Firestore Timestamp
+       */
+      const timestamp = firebase.firestore.FieldValue.serverTimestamp()
+    </script>
+  </body>
+</html>
