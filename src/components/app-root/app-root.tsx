@@ -3,7 +3,7 @@
 declare const db: firebase.firestore.Firestore
 declare const auth: firebase.auth.Auth
 
-import { Component, State, Watch } from '@stencil/core'
+import { Component, Prop, State, Watch } from '@stencil/core'
 import { authState } from 'rxfire/auth'
 import { docData } from 'rxfire/firestore'
 import { User } from '../../models'
@@ -13,6 +13,9 @@ import { User } from '../../models'
   styleUrl: 'app-root.scss'
 })
 export class AppRoot {
+  @Prop({ connect: 'ion-toast-controller' })
+  toastCtrl: HTMLIonToastControllerElement
+
   @State() currentUserId: string
   @State() currentUser: User
 
@@ -22,6 +25,7 @@ export class AppRoot {
     if (currentUserId) {
       console.log('I am:', currentUserId)
       this.getUserProfile()
+      this.notifyMe()
     }
   }
 
@@ -43,6 +47,17 @@ export class AppRoot {
 
       auth.signInAnonymously()
     })
+  }
+
+  async notifyMe() {
+    const toast = await this.toastCtrl.create({
+      message: 'Connected',
+      showCloseButton: true,
+      duration: 3000,
+      closeButtonText: 'Okay'
+    })
+
+    toast.present()
   }
 
   render() {

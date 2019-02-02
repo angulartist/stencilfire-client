@@ -83,7 +83,7 @@ export class AppChest {
         chestId: this.chestId,
         userId: this.currentUser.id,
         key: this.userKey,
-        state: 0,
+        state: STATE.PROCESSING,
         madeAt: timestamp
       })
     }
@@ -195,11 +195,11 @@ export class AppChest {
                     ]
                   ) : (
                     <ion-item lines='none' color='tertiary'>
-                      <ion-text text-center>
+                      <ion-label text-center>
                         {this.chest.winnerId === this.currentUser.id
                           ? 'Woah! Good job, your won it!'
                           : 'This chest has already been powned!'}
-                      </ion-text>
+                      </ion-label>
                     </ion-item>
                   )}
                 </ion-card>
