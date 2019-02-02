@@ -5,7 +5,7 @@ declare const db: firebase.firestore.Firestore
 import { Component, State, Prop } from '@stencil/core'
 import { Subscription } from 'rxjs'
 import { collectionData } from 'rxfire/firestore'
-import { User, Chest } from '../../models'
+import { User, Chest, STATE } from '../../models'
 
 @Component({
   tag: 'app-start',
@@ -33,7 +33,7 @@ export class AppStart {
   }
 
   getChests() {
-    const ref = db.collection('chests').where('state', '==', 1)
+    const ref = db.collection('chests').where('state', '==', STATE.SUCCESS)
 
     this.chests$ = collectionData(ref, 'id').subscribe(d => (this.chests = d))
   }
@@ -66,7 +66,7 @@ export class AppStart {
           <ion-row justify-content-center>
             {this.chests ? (
               this.chests.map(chest => (
-                <ion-col size='12' size-sm='6' size-md='4'>
+                <ion-col size='12' size-md='6' size-lg='4'>
                   <ion-card text-center>
                     <ion-card-header>
                       {chest.isLocked ? (
