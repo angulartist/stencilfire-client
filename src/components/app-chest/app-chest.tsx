@@ -5,7 +5,8 @@ declare const timestamp: firebase.firestore.Timestamp
 
 import { Component, Prop, State } from '@stencil/core'
 import { collectionData, docData } from 'rxfire/firestore'
-import { Subscription } from 'rxjs'
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
 import { STATE, Chest, Attempt } from '../../models'
 
 @Component({
@@ -13,10 +14,9 @@ import { STATE, Chest, Attempt } from '../../models'
   styleUrl: 'app-chest.scss'
 })
 export class AppChest {
+  destroy$: Subject<boolean> = new Subject<boolean>()
   chestInput: HTMLIonInputElement
   userKey: string
-  chest$: Subscription
-  myAttempts$: Subscription
 
   // Props
   @Prop() chestId: string
@@ -26,6 +26,7 @@ export class AppChest {
   @State() chest: Chest
   @State() myAttempts: Attempt[]
   @State() myReward: any
+  @State() noFoundChest: boolean = false
 
   componentWillLoad() {
     if (this.currentUser) {
@@ -36,13 +37,8 @@ export class AppChest {
 
   // Avoid memory leaks
   componentDidUnload() {
-    if (typeof this.myAttempts$ !== 'undefined') {
-      this.myAttempts$.unsubscribe()
-    }
-
-    if (typeof this.chest$ !== 'undefined') {
-      this.chest$.unsubscribe()
-    }
+    this.destroy$.next(true)
+    this.destroy$.unsubscribe()
   }
 
   async getReward() {
@@ -56,7 +52,17 @@ export class AppChest {
   getChest() {
     const ref = db.doc(`chests/${this.chestId}`)
 
-    this.chest$ = docData(ref, 'id').subscribe(d => (this.chest = d))
+    docData(ref, 'id')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((d: Chest) => {
+        if (d.state) {
+          this.chest = d
+          this.noFoundChest = false
+        } else {
+          this.chest = {}
+          this.noFoundChest = true
+        }
+      })
   }
 
   getMyAttempts() {
@@ -67,10 +73,12 @@ export class AppChest {
       .orderBy('madeAt', 'desc')
       .limit(5)
 
-    this.myAttempts$ = collectionData(ref, 'id').subscribe((d: Attempt[]) => {
-      this.myAttempts = d
-      this.getReward()
-    })
+    collectionData(ref, 'id')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((d: Attempt[]) => {
+        this.myAttempts = d
+        this.getReward()
+      })
   }
 
   async tryUnlock(code: string) {
@@ -122,10 +130,15 @@ export class AppChest {
         <ion-text text-center color='medium'>
           <h3>Attempts are reset each 15 minutes.</h3>
         </ion-text>
+        {this.noFoundChest ? (
+          <ion-text text-center color='danger'>
+            <h4>Chest ID not found</h4>
+          </ion-text>
+        ) : null}
         <ion-grid>
           <ion-row justify-content-center>
             <ion-col size='12' size-md='8' size-lg='6' text-center>
-              {this.chest ? (
+              {this.chest && this.chest.id ? (
                 <ion-card>
                   <ion-item text-center lines='none'>
                     <ion-text color='medium' slot='end'>
@@ -169,28 +182,26 @@ export class AppChest {
                         />
                       </ion-item>,
                       <div>
-                        {this.myAttempts ? (
-                          this.myAttempts.map(attempt =>
-                            attempt.state === STATE.PROCESSING ? (
-                              <ion-item lines='full' color='primary'>
-                                {attempt.key}
-                                <ion-text slot='end'>Analyse...</ion-text>
-                              </ion-item>
-                            ) : attempt.state === STATE.SUCCESS ? (
-                              <ion-item lines='full' color='success'>
-                                {attempt.key}
-                                <ion-text slot='end'>Success!</ion-text>
-                              </ion-item>
-                            ) : (
-                              <ion-item lines='full' color='danger'>
-                                {attempt.key}
-                                <ion-text slot='end'>Failed</ion-text>
-                              </ion-item>
+                        {this.myAttempts
+                          ? this.myAttempts.map(attempt =>
+                              attempt.state === STATE.PROCESSING ? (
+                                <ion-item lines='full' color='primary'>
+                                  {attempt.key}
+                                  <ion-text slot='end'>Analyse...</ion-text>
+                                </ion-item>
+                              ) : attempt.state === STATE.SUCCESS ? (
+                                <ion-item lines='full' color='success'>
+                                  {attempt.key}
+                                  <ion-text slot='end'>Success!</ion-text>
+                                </ion-item>
+                              ) : (
+                                <ion-item lines='full' color='danger'>
+                                  {attempt.key}
+                                  <ion-text slot='end'>Failed</ion-text>
+                                </ion-item>
+                              )
                             )
-                          )
-                        ) : (
-                          <ion-spinner name='crescent' />
-                        )}
+                          : [<ion-spinner name='crescent' />]}
                       </div>
                     ]
                   ) : (
@@ -204,7 +215,7 @@ export class AppChest {
                   )}
                 </ion-card>
               ) : (
-                <ion-spinner name='crescent' />
+                [<ion-spinner name='crescent' />]
               )}
             </ion-col>
           </ion-row>

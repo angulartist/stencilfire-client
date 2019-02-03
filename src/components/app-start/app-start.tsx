@@ -3,7 +3,8 @@
 declare const db: firebase.firestore.Firestore
 
 import { Component, State, Prop } from '@stencil/core'
-import { Subscription } from 'rxjs'
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
 import { collectionData } from 'rxfire/firestore'
 import { User, Chest, STATE } from '../../models'
 
@@ -12,8 +13,8 @@ import { User, Chest, STATE } from '../../models'
   styleUrl: 'app-start.scss'
 })
 export class AppStart {
+  destroy$: Subject<boolean> = new Subject<boolean>()
   userInput: HTMLInputElement
-  chests$: Subscription
 
   // Props
   @Prop() currentUser: User
@@ -27,15 +28,16 @@ export class AppStart {
 
   // Avoid memory leaks
   componentDidUnload() {
-    if (typeof this.chests$ !== 'undefined') {
-      this.chests$.unsubscribe()
-    }
+    this.destroy$.next(true)
+    this.destroy$.unsubscribe()
   }
 
   getChests() {
     const ref = db.collection('chests').where('state', '==', STATE.SUCCESS)
 
-    this.chests$ = collectionData(ref, 'id').subscribe(d => (this.chests = d))
+    collectionData(ref, 'id')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(d => (this.chests = d))
   }
 
   render() {
