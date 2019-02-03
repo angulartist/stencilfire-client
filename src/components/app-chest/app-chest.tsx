@@ -7,7 +7,7 @@ import { Component, Prop, State } from '@stencil/core'
 import { collectionData, docData } from 'rxfire/firestore'
 import { Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
-import { STATE, Chest, Attempt } from '../../models'
+import { STATE, Chest, Attempt, User } from '../../models'
 
 @Component({
   tag: 'app-chest',
@@ -18,15 +18,15 @@ export class AppChest {
   chestInput: HTMLIonInputElement
   userKey: string
 
-  // Props
-  @Prop() chestId: string
-  @Prop() currentUser: any
-
   // States
   @State() chest: Chest
   @State() myAttempts: Attempt[]
   @State() myReward: any
   @State() noFoundChest: boolean = false
+
+  // Props
+  @Prop() chestId: string
+  @Prop() currentUser: User
 
   componentWillLoad() {
     if (this.currentUser) {
@@ -42,10 +42,8 @@ export class AppChest {
   }
 
   async getReward() {
-    const ref = db.doc(`users/${this.currentUser.uid}/chests/${this.chestId}`)
-
+    const ref = db.doc(`users/${this.currentUser.id}/chests/${this.chestId}`)
     const doc = await ref.get()
-
     this.myReward = doc.data()
   }
 
@@ -113,23 +111,24 @@ export class AppChest {
           <ion-buttons slot='primary'>
             <ion-button>
               <ion-icon mode='md' slot='end' name='key' />
-              {this.currentUser
-                ? this.currentUser.attemptsLeft > 0
-                  ? this.currentUser.attemptsLeft
-                  : 0
-                : 0}
+              {this.currentUser ? (
+                this.currentUser.attemptsLeft > 0 ? (
+                  this.currentUser.attemptsLeft
+                ) : (
+                  <ion-text color='danger'>Out of keys</ion-text>
+                )
+              ) : (
+                'Connecting...'
+              )}
             </ion-button>
           </ion-buttons>
           <ion-title>Chests.io (alpha)</ion-title>
         </ion-toolbar>
         <ion-toolbar>
-          <ion-title>Chest {this.chestId}</ion-title>
+          <ion-title>Chest ID:{this.chestId}</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content padding>
-        <ion-text text-center color='medium'>
-          <h3>Attempts are reset each 15 minutes.</h3>
-        </ion-text>
+      <ion-content>
         {this.noFoundChest ? (
           <ion-text text-center color='danger'>
             <h4>Chest ID not found</h4>
@@ -205,51 +204,47 @@ export class AppChest {
                       </div>
                     ]
                   ) : (
-                    <ion-item lines='none' color='tertiary'>
-                      <ion-label text-center>
-                        {this.chest.winnerId === this.currentUser.id
-                          ? 'Woah! Good job, your won it!'
-                          : 'This chest has already been powned!'}
-                      </ion-label>
-                    </ion-item>
+                    <div>
+                      {this.chest.winnerId === this.currentUser.id ? (
+                        <ion-item lines='none' color='success'>
+                          <ion-label text-center>Good job!</ion-label>
+                        </ion-item>
+                      ) : (
+                        <ion-item lines='none' color='warning'>
+                          <ion-label text-center>Too late!</ion-label>
+                        </ion-item>
+                      )}
+                    </div>
                   )}
                 </ion-card>
               ) : (
                 [<ion-spinner name='crescent' />]
               )}
             </ion-col>
-          </ion-row>
-          <ion-row justify-content-center>
-            {this.chest ? (
-              <ion-col size='12' size-md='8' size-lg='6' text-center>
-                {this.myReward ? (
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-subtitle color='warning'>
-                        Reward
-                      </ion-card-subtitle>
+            <ion-col size='12' size-md='8' size-lg='5' text-center>
+              {this.myReward ? (
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-subtitle color='warning'>
+                      Reward
+                    </ion-card-subtitle>
 
-                      <ion-card-title>Grab it!</ion-card-title>
-                    </ion-card-header>
-                    <ion-card-content>
-                      {this.myReward.treasure}
-                    </ion-card-content>
-                  </ion-card>
-                ) : (
-                  <ion-card>
-                    <ion-card-header>
-                      <ion-card-subtitle color='warning'>
-                        Reward
-                      </ion-card-subtitle>
+                    <ion-card-title>Grab it!</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>{this.myReward.treasure}</ion-card-content>
+                </ion-card>
+              ) : (
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-subtitle color='warning'>
+                      Reward
+                    </ion-card-subtitle>
 
-                      <ion-card-title>Locked</ion-card-title>
-                    </ion-card-header>
-                  </ion-card>
-                )}
-              </ion-col>
-            ) : (
-              <ion-spinner name='crescent' />
-            )}
+                    <ion-card-title>Locked</ion-card-title>
+                  </ion-card-header>
+                </ion-card>
+              )}
+            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-content>

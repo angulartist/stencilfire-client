@@ -21,3 +21,13 @@ body {
 .r {
   border: 1px solid red;
 }
+
+.h-full {
+  min-height: calc(100vh - 54px);
+}
+
+img.img--banner {
+  max-width: 400px;
+  width: 60%;
+  margin: auto;
+}

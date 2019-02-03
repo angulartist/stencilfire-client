@@ -13,11 +13,12 @@ import { User } from '../../models'
   styleUrl: 'app-root.scss'
 })
 export class AppRoot {
-  @Prop({ connect: 'ion-toast-controller' })
-  toastCtrl: HTMLIonToastControllerElement
-
   @State() currentUserId: string
   @State() currentUser: User
+  @State() hasUserEmail: boolean = true
+
+  @Prop({ connect: 'ion-toast-controller' })
+  toastCtrl: HTMLIonToastControllerElement
 
   // Get ready to grab the current user profile
   @Watch('currentUserId')
@@ -26,6 +27,17 @@ export class AppRoot {
       console.log('I am:', currentUserId)
       this.getUserProfile()
       this.notifyMe()
+    }
+  }
+
+  @Watch('currentUser')
+  watchUser({ email }: User) {
+    if (email) {
+      console.log('User has email:', email)
+      this.hasUserEmail = true
+    } else {
+      console.log('Unknow user')
+      this.hasUserEmail = false
     }
   }
 
@@ -52,9 +64,7 @@ export class AppRoot {
   async notifyMe() {
     const toast = await this.toastCtrl.create({
       message: 'Connected',
-      showCloseButton: true,
-      duration: 3000,
-      closeButtonText: 'Okay'
+      duration: 3000
     })
 
     toast.present()
@@ -74,7 +84,16 @@ export class AppRoot {
             component='app-chest'
             componentProps={{ currentUser: this.currentUser }}
           />
-          <ion-route url='/login/' component='app-chest' />
+          <ion-route
+            url='/email'
+            component='app-email'
+            componentProps={{ currentUser: this.currentUser }}
+          />
+          {!this.hasUserEmail ? (
+            <ion-route-redirect from='*' to='/email' />
+          ) : (
+            <ion-route-redirect from='/email' to='/' />
+          )}
         </ion-router>
         <ion-nav animated={false} />
       </ion-app>

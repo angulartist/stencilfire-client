@@ -16,14 +16,16 @@ export class AppStart {
   destroy$: Subject<boolean> = new Subject<boolean>()
   userInput: HTMLInputElement
 
-  // Props
-  @Prop() currentUser: User
-
   // States
   @State() chests: Chest[]
 
+  // Props
+  @Prop() currentUser: User
+
   componentWillLoad() {
-    this.getChests()
+    if (this.currentUser) {
+      this.getChests()
+    }
   }
 
   // Avoid memory leaks
@@ -47,11 +49,15 @@ export class AppStart {
           <ion-buttons slot='primary'>
             <ion-button>
               <ion-icon mode='md' slot='end' name='key' />
-              {this.currentUser
-                ? this.currentUser.attemptsLeft
-                  ? this.currentUser.attemptsLeft
-                  : 0
-                : 0}
+              {this.currentUser ? (
+                this.currentUser.attemptsLeft > 0 ? (
+                  this.currentUser.attemptsLeft
+                ) : (
+                  <ion-text color='danger'>Out of keys</ion-text>
+                )
+              ) : (
+                'Connecting...'
+              )}
             </ion-button>
           </ion-buttons>
           <ion-title>Chests.io (alpha)</ion-title>
@@ -60,7 +66,7 @@ export class AppStart {
           <ion-title>Home</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content padding>
+      <ion-content>
         <ion-text color='medium' text-center>
           <h1>Locked chests</h1>
         </ion-text>
@@ -68,7 +74,7 @@ export class AppStart {
           <ion-row justify-content-center>
             {this.chests ? (
               this.chests.map(chest => (
-                <ion-col size='12' size-md='6' size-lg='4'>
+                <ion-col size='12' size-md='6' size-lg='5'>
                   <ion-card text-center>
                     <ion-card-header>
                       {chest.isLocked ? (

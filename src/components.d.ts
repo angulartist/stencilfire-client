@@ -18,11 +18,18 @@ export namespace Components {
 
   interface AppChest {
     'chestId': string;
-    'currentUser': any;
+    'currentUser': User;
   }
   interface AppChestAttributes extends StencilHTMLAttributes {
     'chestId'?: string;
-    'currentUser'?: any;
+    'currentUser'?: User;
+  }
+
+  interface AppEmail {
+    'currentUser': User;
+  }
+  interface AppEmailAttributes extends StencilHTMLAttributes {
+    'currentUser'?: User;
   }
 
   interface AppHome {}
@@ -49,6 +56,7 @@ export namespace Components {
 declare global {
   interface StencilElementInterfaces {
     'AppChest': Components.AppChest;
+    'AppEmail': Components.AppEmail;
     'AppHome': Components.AppHome;
     'AppProfile': Components.AppProfile;
     'AppRoot': Components.AppRoot;
@@ -57,6 +65,7 @@ declare global {
 
   interface StencilIntrinsicElements {
     'app-chest': Components.AppChestAttributes;
+    'app-email': Components.AppEmailAttributes;
     'app-home': Components.AppHomeAttributes;
     'app-profile': Components.AppProfileAttributes;
     'app-root': Components.AppRootAttributes;
@@ -68,6 +77,12 @@ declare global {
   var HTMLAppChestElement: {
     prototype: HTMLAppChestElement;
     new (): HTMLAppChestElement;
+  };
+
+  interface HTMLAppEmailElement extends Components.AppEmail, HTMLStencilElement {}
+  var HTMLAppEmailElement: {
+    prototype: HTMLAppEmailElement;
+    new (): HTMLAppEmailElement;
   };
 
   interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
@@ -96,6 +111,7 @@ declare global {
 
   interface HTMLElementTagNameMap {
     'app-chest': HTMLAppChestElement
+    'app-email': HTMLAppEmailElement
     'app-home': HTMLAppHomeElement
     'app-profile': HTMLAppProfileElement
     'app-root': HTMLAppRootElement
@@ -104,6 +120,7 @@ declare global {
 
   interface ElementTagNameMap {
     'app-chest': HTMLAppChestElement;
+    'app-email': HTMLAppEmailElement;
     'app-home': HTMLAppHomeElement;
     'app-profile': HTMLAppProfileElement;
     'app-root': HTMLAppRootElement;
