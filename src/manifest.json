@@ -1,6 +1,6 @@
 {
-  "name": "Chests.io",
-  "short_name": "Chests",
+  "name": "Howlongisyourdong.com",
+  "short_name": "Howlongisyourdong",
   "start_url": "/",
   "display": "standalone",
   "icons": [
@@ -11,6 +11,5 @@
     }
   ],
   "background_color": "#488aff",
-  "theme_color": "#488aff",
-  "vV3": "768GQKDG9hd"
+  "theme_color": "#488aff"
 }

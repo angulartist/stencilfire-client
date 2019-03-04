@@ -9,92 +9,85 @@ import '@stencil/core';
 
 import '@ionic/core';
 import 'ionicons';
-import {
-  User,
-} from './models';
 
 
 export namespace Components {
 
-  interface AppChest {
-    'chestId': string;
-    'currentUser': User;
+  interface AppCheckout {
+    'billingAmount': number;
+    'currentUser': any;
+    'formatedInput': number;
   }
-  interface AppChestAttributes extends StencilHTMLAttributes {
-    'chestId'?: string;
-    'currentUser'?: User;
-  }
-
-  interface AppEmail {
-    'currentUser': User;
-  }
-  interface AppEmailAttributes extends StencilHTMLAttributes {
-    'currentUser'?: User;
+  interface AppCheckoutAttributes extends StencilHTMLAttributes {
+    'billingAmount'?: number;
+    'currentUser'?: any;
+    'formatedInput'?: number;
   }
 
-  interface AppHome {}
-  interface AppHomeAttributes extends StencilHTMLAttributes {}
+  interface AppConverter {}
+  interface AppConverterAttributes extends StencilHTMLAttributes {}
 
-  interface AppProfile {
-    'name': string;
-  }
-  interface AppProfileAttributes extends StencilHTMLAttributes {
-    'name'?: string;
-  }
+  interface AppDongboard {}
+  interface AppDongboardAttributes extends StencilHTMLAttributes {}
+
+  interface AppHeader {}
+  interface AppHeaderAttributes extends StencilHTMLAttributes {}
+
+  interface AppMatchmaker {}
+  interface AppMatchmakerAttributes extends StencilHTMLAttributes {}
 
   interface AppRoot {}
   interface AppRootAttributes extends StencilHTMLAttributes {}
-
-  interface AppStart {
-    'currentUser': User;
-  }
-  interface AppStartAttributes extends StencilHTMLAttributes {
-    'currentUser'?: User;
-  }
 }
 
 declare global {
   interface StencilElementInterfaces {
-    'AppChest': Components.AppChest;
-    'AppEmail': Components.AppEmail;
-    'AppHome': Components.AppHome;
-    'AppProfile': Components.AppProfile;
+    'AppCheckout': Components.AppCheckout;
+    'AppConverter': Components.AppConverter;
+    'AppDongboard': Components.AppDongboard;
+    'AppHeader': Components.AppHeader;
+    'AppMatchmaker': Components.AppMatchmaker;
     'AppRoot': Components.AppRoot;
-    'AppStart': Components.AppStart;
   }
 
   interface StencilIntrinsicElements {
-    'app-chest': Components.AppChestAttributes;
-    'app-email': Components.AppEmailAttributes;
-    'app-home': Components.AppHomeAttributes;
-    'app-profile': Components.AppProfileAttributes;
+    'app-checkout': Components.AppCheckoutAttributes;
+    'app-converter': Components.AppConverterAttributes;
+    'app-dongboard': Components.AppDongboardAttributes;
+    'app-header': Components.AppHeaderAttributes;
+    'app-matchmaker': Components.AppMatchmakerAttributes;
     'app-root': Components.AppRootAttributes;
-    'app-start': Components.AppStartAttributes;
   }
 
 
-  interface HTMLAppChestElement extends Components.AppChest, HTMLStencilElement {}
-  var HTMLAppChestElement: {
-    prototype: HTMLAppChestElement;
-    new (): HTMLAppChestElement;
+  interface HTMLAppCheckoutElement extends Components.AppCheckout, HTMLStencilElement {}
+  var HTMLAppCheckoutElement: {
+    prototype: HTMLAppCheckoutElement;
+    new (): HTMLAppCheckoutElement;
   };
 
-  interface HTMLAppEmailElement extends Components.AppEmail, HTMLStencilElement {}
-  var HTMLAppEmailElement: {
-    prototype: HTMLAppEmailElement;
-    new (): HTMLAppEmailElement;
+  interface HTMLAppConverterElement extends Components.AppConverter, HTMLStencilElement {}
+  var HTMLAppConverterElement: {
+    prototype: HTMLAppConverterElement;
+    new (): HTMLAppConverterElement;
   };
 
-  interface HTMLAppHomeElement extends Components.AppHome, HTMLStencilElement {}
-  var HTMLAppHomeElement: {
-    prototype: HTMLAppHomeElement;
-    new (): HTMLAppHomeElement;
+  interface HTMLAppDongboardElement extends Components.AppDongboard, HTMLStencilElement {}
+  var HTMLAppDongboardElement: {
+    prototype: HTMLAppDongboardElement;
+    new (): HTMLAppDongboardElement;
   };
 
-  interface HTMLAppProfileElement extends Components.AppProfile, HTMLStencilElement {}
-  var HTMLAppProfileElement: {
-    prototype: HTMLAppProfileElement;
-    new (): HTMLAppProfileElement;
+  interface HTMLAppHeaderElement extends Components.AppHeader, HTMLStencilElement {}
+  var HTMLAppHeaderElement: {
+    prototype: HTMLAppHeaderElement;
+    new (): HTMLAppHeaderElement;
+  };
+
+  interface HTMLAppMatchmakerElement extends Components.AppMatchmaker, HTMLStencilElement {}
+  var HTMLAppMatchmakerElement: {
+    prototype: HTMLAppMatchmakerElement;
+    new (): HTMLAppMatchmakerElement;
   };
 
   interface HTMLAppRootElement extends Components.AppRoot, HTMLStencilElement {}
@@ -103,28 +96,22 @@ declare global {
     new (): HTMLAppRootElement;
   };
 
-  interface HTMLAppStartElement extends Components.AppStart, HTMLStencilElement {}
-  var HTMLAppStartElement: {
-    prototype: HTMLAppStartElement;
-    new (): HTMLAppStartElement;
-  };
-
   interface HTMLElementTagNameMap {
-    'app-chest': HTMLAppChestElement
-    'app-email': HTMLAppEmailElement
-    'app-home': HTMLAppHomeElement
-    'app-profile': HTMLAppProfileElement
+    'app-checkout': HTMLAppCheckoutElement
+    'app-converter': HTMLAppConverterElement
+    'app-dongboard': HTMLAppDongboardElement
+    'app-header': HTMLAppHeaderElement
+    'app-matchmaker': HTMLAppMatchmakerElement
     'app-root': HTMLAppRootElement
-    'app-start': HTMLAppStartElement
   }
 
   interface ElementTagNameMap {
-    'app-chest': HTMLAppChestElement;
-    'app-email': HTMLAppEmailElement;
-    'app-home': HTMLAppHomeElement;
-    'app-profile': HTMLAppProfileElement;
+    'app-checkout': HTMLAppCheckoutElement;
+    'app-converter': HTMLAppConverterElement;
+    'app-dongboard': HTMLAppDongboardElement;
+    'app-header': HTMLAppHeaderElement;
+    'app-matchmaker': HTMLAppMatchmakerElement;
     'app-root': HTMLAppRootElement;
-    'app-start': HTMLAppStartElement;
   }
 
 

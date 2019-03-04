@@ -2,20 +2,23 @@
 <html dir="ltr" lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Chests.io (alpha)</title>
+    <title>How long is your dong?</title>
 
     <meta
       name="viewport"
       content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <meta name="description" content="Rate anything with emojis!" />
+    <meta
+      name="description"
+      content="Tell people how long is your dong and grow-up your e-penis."
+    />
     <meta name="theme-color" content="#16161d" />
 
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="Ionic PWA" />
+    <meta name="apple-mobile-web-app-title" content="HowLongIsYourDong" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
     <meta http-equiv="x-ua-compatible" content="IE=Edge" />
@@ -31,15 +34,17 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css"
     />
+    <script src="https://js.stripe.com/v3/"></script>
   </head>
 
   <body>
     <app-root></app-root>
 
-    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-functions.js"></script>
 
     <script>
       const config = {
@@ -56,15 +61,14 @@
       // Firestore
       const db = app.firestore()
 
-      db.settings({
-        timestampsInSnapshots: true
-      })
-
       // Storage
       const storage = app.storage()
 
       // Auth
       const auth = app.auth()
+
+      // Auth
+      const fn = app.functions()
 
       /**
        * Firestore Timestamp

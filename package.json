@@ -15,18 +15,30 @@
   },
   "dependencies": {
     "@ionic/core": "4.0.0",
+    "@stencil/router": "^0.3.3",
     "@types/faker": "^4.1.5",
+    "@types/lodash": "^4.14.121",
+    "@types/lunr": "^2.3.2",
     "faker": "^4.1.0",
     "firebase": "^5.8.1",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.11",
+    "lunr": "^2.3.5",
     "marked": "^0.6.0",
+    "moment": "^2.24.0",
+    "momentjs": "^2.0.0",
+    "node-time-ago": "^1.0.0",
     "rxfire": "^3.3.1",
     "rxjs": "^6.3.3",
     "sweetalert2": "^8.0.3",
-    "swing": "^3.1.3"
+    "swing": "^3.1.3",
+    "time-ago-web-component": "^1.2.2",
+    "timeago.js": "^4.0.0-beta.2"
   },
   "devDependencies": {
     "@stencil/core": "0.17.0",
     "@stencil/sass": "^0.1.1",
+    "@types/jquery": "^3.3.29",
     "workbox-build": "3.4.1"
   }
 }
